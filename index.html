@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>We Buy Easy – Extended</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f8f8f8; }
+    .section { display: none; padding: 20px; background: #fff; border-radius: 8px; margin-bottom: 20px; }
+    .section.active { display: block; }
+    .step-text { margin-top: 10px; color: #333; font-style: italic; }
+    input[type="text"] { padding: 10px; width: 100%; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
+    .error { color: red; font-size: 0.9em; display: none; }
+    .button { padding: 10px 20px; margin-top: 10px; background: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .button:hover { background: #0056b3; }
+    .toggle-text { display: none; margin-bottom: 10px; font-size: 0.9em; color: #555; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+    .modal-content { background: white; padding: 20px; border-radius: 8px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div id="step1" class="section active">
+    <h2>Step 1: Enter Property Address</h2>
+    <input type="text" id="addr1"/>
+    <button class="button" onclick="nextStep(1)">Next</button>
+    <div class="step-text" id="text1">You are one step closer to a cash offer!</div>
+  </div>
+  <div id="step2" class="section">
+    <h2>Step 2: Enter Your Contact Info</h2>
+    <input type="text" id="contact1"/>
+    <button class="button" onclick="nextStep(2)">Next</button>
+    <div class="step-text" id="text2">We use this to contact you quickly.</div>
+  </div>
+  <div id="step3" class="section">
+    <h2>Step 3: Select Your Timeline</h2>
+    <input type="text" id="timeline1"/>
+    <button class="button" onclick="nextStep(3)">Next</button>
+    <div class="step-text" id="text3">Tell us when you'd like to sell.</div>
+  </div>
+  <div id="step4" class="section">
+    <h2>Step 4: Final Details</h2>
+    <input type="text" id="final1"/>
+    <button class="button" onclick="nextStep(4)">Continue</button>
+    <div class="step-text" id="text4">Almost done! Just a few more details.</div>
+  </div>
+  <div id="block2" class="section">
+    <h2>Tell Us More</h2>
+    <div>
+      <input type="text" id="line1" placeholder="Line 1" onclick="toggleText(1)"/><div class="toggle-text" id="t1">Additional info about line 1.</div>
+      <input type="text" id="line2" placeholder="Line 2" onclick="toggleText(2)"/><div class="toggle-text" id="t2">Additional info about line 2.</div>
+      <input type="text" id="line3" placeholder="Line 3" onclick="toggleText(3)"/><div class="toggle-text" id="t3">Additional info about line 3.</div>
+      <input type="text" id="line4" placeholder="Line 4" onclick="toggleText(4)"/><div class="toggle-text" id="t4">Additional info about line 4.</div>
+      <input type="text" id="line5" placeholder="Line 5" onclick="toggleText(5)"/><div class="toggle-text" id="t5">Additional info about line 5.</div>
+      <div class="error" id="errorBlock">Please fill out all lines.</div>
+    </div>
+    <button class="button" onclick="validateBlock2()">Submit</button>
+  </div>
+  <div id="block3" class="section">
+    <h2>Next Actions</h2>
+    <button class="button" onclick="showModal()">Confirm</button>
+    <button class="button" onclick="showModal()">Finish</button>
+  </div>
+  <div class="modal" id="modalBox">
+    <div class="modal-content">
+      <p>Thank you! Returning to Step 1...</p>
+    </div>
+  </div>
+  <script>
+    function nextStep(step) {
+      document.getElementById('step' + step).classList.remove('active');
+      if (step < 4) {
+        document.getElementById('step' + (step + 1)).classList.add('active');
+      } else {
+        document.getElementById('block2').classList.add('active');
+      }
+    }
+    function toggleText(n) {
+      document.getElementById('t' + n).style.display = 'block';
+    }
+    function validateBlock2() {
+      let valid = true;
+      for (let i = 1; i <= 5; i++) {
+        const val = document.getElementById('line' + i).value;
+        if (!val.trim()) valid = false;
+      }
+      const err = document.getElementById('errorBlock');
+      if (!valid) {
+        err.style.display = 'block';
+      } else {
+        err.style.display = 'none';
+        document.getElementById('block2').classList.remove('active');
+        document.getElementById('block3').classList.add('active');
+      }
+    }
+    function showModal() {
+      const modal = document.getElementById('modalBox');
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        modal.style.display = 'none';
+        document.getElementById('block3').classList.remove('active');
+        document.getElementById('step1').classList.add('active');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
